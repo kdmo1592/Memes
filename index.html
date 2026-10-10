@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Memecoins">
+<meta name="theme-color" content="#7c2d92">
+<link rel="apple-touch-icon" href="icono.png">
+<link rel="icon" href="icono.png">
+<title>Candidatos de memecoins</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--txt:#1c2833;--sub:#5d6d7e;--linea:#e5e8eb;--acento:#7c2d92;
+  --cand:#1e8449;--vig:#2471a3;--deb:#7f8c8d;--sinv:#b9770e;--desc:#c0392b}
+@media (prefers-color-scheme:dark){:root{--bg:#101418;--card:#1a2026;--txt:#e8ecef;--sub:#9aa7b3;--linea:#2b333b;--acento:#c77ee0}}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font:15px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+header{position:sticky;top:0;z-index:5;background:var(--acento);color:#fff;padding:calc(env(safe-area-inset-top,0px) + 10px) 14px 10px}
+header h1{font-size:18px;margin:0}header p{margin:2px 0 0;font-size:12px;opacity:.9}
+main{padding:12px 12px calc(env(safe-area-inset-bottom,0px) + 80px);max-width:760px;margin:0 auto}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:5;display:flex;background:var(--card);border-top:1px solid var(--linea);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border:0;background:none;color:var(--sub);padding:8px 2px 7px;font-size:10.5px}
+nav button span{display:block;font-size:20px;line-height:1.2}nav button.activo{color:var(--acento);font-weight:600}
+.card{background:var(--card);border-radius:14px;padding:12px 14px;margin:0 0 12px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.card h2{font-size:17px;margin:0 0 6px}.card h3{font-size:15px;margin:12px 0 6px}
+.sub{color:var(--sub);font-size:13px}.error{color:var(--desc);font-weight:600}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:8px;-webkit-overflow-scrolling:touch}
+.chip{flex:0 0 auto;border:1px solid var(--linea);background:var(--card);color:var(--txt);border-radius:16px;padding:6px 12px;font-size:13px}
+.chip.on{background:var(--acento);color:#fff;border-color:var(--acento)}
+.tok{display:block;width:100%;text-align:left;border:0;background:var(--card);color:var(--txt);border-radius:14px;padding:11px 13px;margin:0 0 8px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.cab{display:flex;align-items:center;gap:8px}
+.ph{width:30px;height:30px;border-radius:8px;background:var(--linea);flex:none;object-fit:cover}
+.nom{font-weight:700;font-size:15px}.sym{color:var(--sub);font-size:12px}
+.badge{display:inline-block;border-radius:8px;padding:2px 8px;font-size:11.5px;font-weight:700;color:#fff;margin-left:auto;white-space:nowrap}
+.b-candidato{background:var(--cand)}.b-vigilar{background:var(--vig)}.b-débil{background:var(--deb)}.b-sin{background:var(--sinv)}.b-descartado{background:var(--desc)}
+.nota{font-size:24px;font-weight:800;margin-left:auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;margin-top:8px;font-size:12.5px}
+.linea{font-size:12px;color:var(--sub);margin-top:5px}
+.barra{background:var(--linea);border-radius:6px;height:9px;overflow:hidden;margin:3px 0 1px}.barra i{display:block;height:100%;border-radius:6px;background:var(--acento)}
+.comp{padding:8px 0;border-top:1px solid var(--linea)}.comp:first-child{border-top:0}
+.comp .t{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600}
+.base{display:inline-block;font-size:10.5px;border-radius:6px;padding:0 6px;margin-left:5px;font-weight:600;vertical-align:1px}
+.base-estudio{background:#d5f5e3;color:#145a32}.base-herramienta{background:#d6eaf8;color:#1b4f72}.base-práctica{background:#fdebd0;color:#7e5109}
+ul.l{margin:6px 0 0;padding-left:18px;font-size:13px}ul.l li{margin:4px 0}
+.tabla{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:5px 6px;border-bottom:1px solid var(--linea);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}th{color:var(--sub);font-weight:600}
+a.ext{color:var(--acento);text-decoration:none;font-weight:600;display:inline-block;margin:3px 0}
+.veredicto{border-left:4px solid var(--acento);padding:6px 10px;background:rgba(124,45,146,.07);border-radius:6px;font-size:14px}
+</style>
+</head>
+<body>
+<header><h1>🎯 Candidatos de memecoins · Solana</h1><p id="estado">Cargando…</p></header>
+<main id="vista"></main>
+<nav>
+  <button data-tab="candidatos" class="activo"><span>🎯</span>Candidatos</button>
+  <button data-tab="descartados"><span>⛔</span>Descartados</button>
+  <button data-tab="validacion"><span>📈</span>Validación</button>
+  <button data-tab="metodo"><span>📖</span>Método</button>
+</nav>
+<script>
+(function () {
+  var D = null, st = { tab: "candidatos", banda: "todas", fase: "todas", detalle: null };
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function usd(x) { if (x == null || !isFinite(x)) return "—"; if (x >= 1e6) return "$" + (x / 1e6).toFixed(2) + "M"; if (x >= 1e3) return "$" + (x / 1e3).toFixed(1) + "k"; return "$" + x.toFixed(0); }
+  function pct(x, d) { return x == null || !isFinite(x) ? "—" : (100 * x).toFixed(d == null ? 0 : d) + " %"; }
+  function signo(x) { return x == null || !isFinite(x) ? "—" : (x >= 0 ? "+" : "") + (100 * x).toFixed(0) + " %"; }
+  function edad(min) { if (min == null) return "—"; if (min < 60) return min.toFixed(0) + " min"; if (min < 2880) return (min / 60).toFixed(1) + " h"; return (min / 1440).toFixed(1) + " d"; }
+  function claseBanda(b) { return b === "sin verificar" ? "b-sin" : "b-" + b; }
+  function badge(t) { return '<span class="badge ' + claseBanda(t.banda) + '">' + esc(t.banda.toUpperCase()) + '</span>'; }
+  function baseTag(b) { return '<span class="base base-' + esc(b) + '">' + esc(b) + '</span>'; }
+  function img(t, cls) { return t.imagen ? '<img class="' + cls + '" src="' + esc(t.imagen) + '" onerror="this.style.visibility=\'hidden\'">' : '<div class="' + cls + '"></div>'; }
+
+  function cargar() {
+    fetch("data.json?t=" + Date.now(), { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (d) { D = d; $("estado").textContent = "Actualizado " + d.generado + " · " + d.tokens.length + " tokens"; ir(st.tab); })
+      .catch(function (e) {
+        $("estado").textContent = "Sin datos";
+        $("vista").innerHTML = '<div class="card"><h2>No se pudieron cargar los datos</h2><p class="error">' + esc(e.message) +
+          '</p><p class="sub">Si acabas de crear la app, espera a que el robot termine su primera ejecución (pestaña Actions de GitHub) y recarga.</p></div>';
+      });
+  }
+
+  function tarjeta(t) {
+    var h = '<button class="tok" data-m="' + esc(t.mint) + '"><div class="cab">' + img(t, "ph") +
+      '<div><div class="nom">' + esc(t.nombre || t.simbolo || "?") + '</div><div class="sym">' + esc(t.simbolo || "") + ' · ' + esc(t.fase) + ' · ' + edad(t.edad_min) + '</div></div>' +
+      (t.puntuacion != null ? '<div class="nota">' + Math.round(t.puntuacion) + '</div>' : badge(t)) + '</div>';
+    h += '<div class="grid"><div>Liquidez <b>' + usd(t.liquidez) + '</b></div><div>FDV <b>' + usd(t.fdv) + '</b></div>' +
+      '<div>Vol. 1 h <b>' + usd(t.vol && t.vol.h1) + '</b></div><div>Cambio 1 h <b>' + (t.cambio && t.cambio.h1 != null ? t.cambio.h1.toFixed(0) + " %" : "—") + '</b></div></div>';
+    if (t.exclusiones && t.exclusiones.length) h += '<div class="linea">⛔ ' + esc(t.exclusiones[0].texto) + '</div>';
+    else if (t.alertas && t.alertas.length) h += '<div class="linea">⚠️ ' + t.alertas.length + ' alerta(s) · ' + esc(t.alertas[0].texto) + '</div>';
+    return h + '</button>';
+  }
+
+  function vistaCandidatos() {
+    var bandas = [["todas", "Todas"], ["candidato", "🟢 Candidato"], ["vigilar", "🔵 Vigilar"], ["débil", "⚪ Débil"], ["sin verificar", "🟠 Sin verificar"]];
+    var fases = [["todas", "Todas las fases"], ["curva pump.fun", "En la curva"], ["graduado (PumpSwap)", "Graduado"], ["pool libre", "Pool libre"]];
+    var h = '<div class="card sub">Puntuación de 0 a 100 con reglas transparentes. <b>No es una predicción de subida</b>: mira la pestaña 📈 Validación para ver cómo han rendido de verdad las puntuaciones pasadas.</div>';
+    h += '<div class="chips">' + bandas.map(function (b) { return '<button class="chip' + (st.banda === b[0] ? " on" : "") + '" data-b="' + b[0] + '">' + b[1] + '</button>'; }).join("") + '</div>';
+    h += '<div class="chips">' + fases.map(function (f) { return '<button class="chip' + (st.fase === f[0] ? " on" : "") + '" data-f="' + f[0] + '">' + f[1] + '</button>'; }).join("") + '</div>';
+    var lista = D.tokens.filter(function (t) {
+      return t.banda !== "descartado" && (st.banda === "todas" || t.banda === st.banda) && (st.fase === "todas" || t.fase === st.fase);
+    });
+    if (!lista.length) return h + '<div class="card sub">Ningún token con estos filtros ahora mismo.</div>';
+    return h + lista.map(tarjeta).join("");
+  }
+  function vistaDescartados() {
+    var lista = D.tokens.filter(function (t) { return t.banda === "descartado"; });
+    var h = '<div class="card sub">Tokens con al menos una señal de estafa documentada. No aparecen en Candidatos aunque su precio suba: históricamente es donde más dinero se pierde.</div>';
+    return h + (lista.length ? lista.map(tarjeta).join("") : '<div class="card sub">Ningún descartado ahora mismo.</div>');
+  }
+  function enganchar() {
+    Array.prototype.forEach.call(document.querySelectorAll("[data-b]"), function (b) { b.onclick = function () { st.banda = this.dataset.b; ir("candidatos"); }; });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-f]"), function (b) { b.onclick = function () { st.fase = this.dataset.f; ir("candidatos"); }; });
+    Array.prototype.forEach.call(document.querySelectorAll(".tok"), function (b) { b.onclick = function () { st.volver = st.tab; st.detalle = this.dataset.m; ir("detalle"); }; });
+  }
+
+  function vistaDetalle() {
+    var t = D.tokens.filter(function (x) { return x.mint === st.detalle; })[0];
+    if (!t) return '<div class="card">Este token ya no está en el último escaneo.</div>';
+    var i = t.info || {}, r = t.rug || {};
+    var h = '<button class="chip" id="volver" style="margin-bottom:10px">← Volver</button>';
+    h += '<div class="card"><div class="cab">' + img(t, "ph") + '<div><h2 style="margin:0">' + esc(t.nombre || t.simbolo) + '</h2><span class="sub">' + esc(t.simbolo || "") + ' · ' + esc(t.fase) + ' · ' + edad(t.edad_min) + '</span></div>' +
+      (t.puntuacion != null ? '<div class="nota">' + Math.round(t.puntuacion) + '</div>' : '') + '</div><p>' + badge(t) + '</p>';
+    if (t.exclusiones.length) h += '<h3>⛔ Motivos de descarte</h3><ul class="l">' + t.exclusiones.map(function (e) { return '<li>' + esc(e.texto) + baseTag(e.base) + '</li>'; }).join("") + '</ul>';
+    if (t.alertas.length) h += '<h3>⚠️ Alertas</h3><ul class="l">' + t.alertas.map(function (a) { return '<li>' + esc(a.texto) + baseTag(a.base) + (a.penal ? ' <span class="sub">(−' + a.penal + ')</span>' : '') + '</li>'; }).join("") + '</ul>';
+    if (t.banda === "sin verificar") h += '<p class="sub">Aún faltan la ficha de GeckoTerminal o el informe de RugCheck (se piden unos 24 tokens cada 20 min). No se puntúa sin ellos.</p>';
+    h += '</div>';
+    if (t.componentes && t.componentes.length) {
+      h += '<div class="card"><h3>De dónde sale la puntuación</h3>' + t.componentes.map(function (c) {
+        return '<div class="comp"><div class="t"><span>' + esc(c.nombre) + baseTag(c.base) + '</span><span>' + c.pts + ' / ' + c.max + '</span></div>' +
+          '<div class="barra"><i style="width:' + (100 * c.pts / c.max) + '%"></i></div><div class="sub">' + esc(c.detalle) + '</div></div>';
+      }).join("") + '<p class="sub">Puntuación = suma de componentes sobre su máximo, menos las penalizaciones de las alertas.</p></div>';
+    }
+    var tx = (t.tx && t.tx.h1) || {};
+    h += '<div class="card"><h3>Datos</h3><div class="grid">' +
+      '<div>Precio <b>$' + (t.precio != null ? Number(t.precio).toPrecision(4) : "—") + '</b></div><div>FDV <b>' + usd(t.fdv) + '</b></div>' +
+      '<div>Liquidez <b>' + usd(t.liquidez) + '</b></div><div>Liq./FDV <b>' + pct(t.liq_fdv, 1) + '</b></div>' +
+      '<div>Vol. 1 h <b>' + usd(t.vol.h1) + '</b></div><div>Vol. 24 h <b>' + usd(t.vol.h24) + '</b></div>' +
+      '<div>Compradores 1 h <b>' + (tx.compradores != null ? tx.compradores : tx.compras) + '</b></div><div>Vendedores 1 h <b>' + (tx.vendedores != null ? tx.vendedores : tx.ventas) + '</b></div>' +
+      '<div>Ticket medio 1 h <b>' + (t.ticket_medio_h1 != null ? "$" + t.ticket_medio_h1.toFixed(0) : "—") + '</b></div><div>Vol./liq. 24 h <b>' + (t.vol_liq != null ? t.vol_liq + "×" : "—") + '</b></div>' +
+      '<div>Holders <b>' + (i.holders != null ? Math.round(i.holders) : "—") + '</b></div><div>Top 10 <b>' + (i.top10 != null ? i.top10.toFixed(0) + " %" : "—") + '</b></div>' +
+      '<div>Desarrollador <b>' + (i.dev_pct != null ? i.dev_pct.toFixed(1) + " %" : "—") + '</b></div><div>Avance curva <b>' + (i.grad_pct != null ? i.grad_pct.toFixed(0) + " %" : "—") + '</b></div>' +
+      '<div>GT Score <b>' + (i.gt_score != null ? Math.round(i.gt_score) : "—") + '</b></div><div>LP bloqueado <b>' + (r.lp_bloqueado != null ? r.lp_bloqueado.toFixed(0) + " %" : "—") + '</b></div>' +
+      '</div><p class="sub">Top 10 según GeckoTerminal (puede incluir el propio pool). Los estudios muestran que los insiders reparten tokens entre varias carteras, así que la concentración real suele ser mayor.</p></div>';
+    h += '<div class="card"><h3>Comprobar por tu cuenta</h3>' +
+      '<a class="ext" target="_blank" href="https://dexscreener.com/solana/' + esc(t.pool) + '">Gráfico en DexScreener ↗</a><br>' +
+      '<a class="ext" target="_blank" href="https://rugcheck.xyz/tokens/' + esc(t.mint) + '">Informe completo en RugCheck ↗</a><br>' +
+      '<a class="ext" target="_blank" href="https://www.geckoterminal.com/solana/pools/' + esc(t.pool) + '">Ficha en GeckoTerminal ↗</a><br>' +
+      '<a class="ext" target="_blank" href="https://solscan.io/token/' + esc(t.mint) + '">Holders en Solscan ↗</a></div>';
+    return h;
+  }
+
+  function vistaValidacion() {
+    var v = D.validacion, e = v.estadisticas, h = '<div class="card"><h2>¿Funciona la puntuación?</h2>' +
+      '<p class="sub">Cada token detectado se guarda con su precio y su banda. El robot mide su cambio 1 h, 6 h y 24 h después. ' +
+      'Si GeckoTerminal ya no lo encuentra o su liquidez cae por debajo de 500 $, cuenta como −100 % (ya no se puede vender).</p>' +
+      '<p class="sub">Seguimiento desde ' + esc(v.desde) + ' · ' + v.abiertos + ' en curso · ' + v.cerrados + ' completados (24 h).</p>' + veredicto(e["24h"]) + '</div>';
+    ["24h", "6h", "1h"].forEach(function (k) {
+      var fila = function (nombre, etq) {
+        var x = e[k][nombre] || { n: 0 };
+        return [etq, x.n, x.n ? signo(x.mediana) : "—", x.n ? pct(x.pct_mas50) : "—", x.n ? pct(x.pct_x2) : "—", x.n ? pct(x.pct_menos80) : "—"];
+      };
+      var filas = [fila("todos", "Todos"), fila("candidato", "🟢 Candidato"), fila("vigilar", "🔵 Vigilar"), fila("débil", "⚪ Débil"),
+        fila("sin verificar", "🟠 Sin verificar"), fila("descartado", "⛔ Descartado"),
+        fila("fase:curva pump.fun", "Fase: curva"), fila("fase:graduado (PumpSwap)", "Fase: graduado"), fila("fase:pool libre", "Fase: pool libre")];
+      h += '<div class="card"><h3>A ' + k.replace("h", " h") + ' de detectarlos</h3><div class="tabla"><table><tr><th></th><th>n</th><th>Mediana</th><th>≥ +50 %</th><th>×2</th><th>≤ −80 %</th></tr>' +
+        filas.map(function (f) { return '<tr>' + f.map(function (c) { return '<td>' + c + '</td>'; }).join("") + '</tr>'; }).join("") + '</table></div></div>';
+    });
+    h += '<div class="card sub"><b>Cómo leerlo.</b> Compara cada banda con la fila "Todos". La puntuación sirve si los candidatos tienen más ' +
+      '"≥ +50 %" y menos "≤ −80 %" que el conjunto, <b>con al menos 30 casos</b> y de forma estable durante semanas. Con menos casos, cualquier diferencia puede ser suerte. ' +
+      'Ojo: el cambio se mide desde el precio al detectarlo, no desde el precio al que tú habrías podido comprar, y no descuenta comisiones ni deslizamiento.</div>';
+    return h;
+  }
+  function veredicto(e) {
+    var c = e.candidato || { n: 0 }, t = e.todos || { n: 0 };
+    if (c.n < 30) return '<p class="veredicto">Aún no hay suficientes datos: ' + c.n + ' candidatos completados de 30 necesarios. Vuelve en unos días.</p>';
+    var mejor = c.pct_mas50 - t.pct_mas50, menosMuertos = t.pct_menos80 - c.pct_menos80;
+    if (mejor > 0.05 && menosMuertos > 0.05) return '<p class="veredicto">Provisional: los candidatos rinden mejor que el conjunto (+' + (100 * mejor).toFixed(0) + ' pp en subidas ≥ 50 % y ' + (100 * menosMuertos).toFixed(0) + ' pp menos hundimientos). Confírmalo durante varias semanas antes de fiarte.</p>';
+    if (mejor < -0.02 || menosMuertos < -0.02) return '<p class="veredicto">Los candidatos rinden <b>peor o igual</b> que el conjunto. Con estos datos, la puntuación no te está ayudando a elegir.</p>';
+    return '<p class="veredicto">Sin diferencia clara entre los candidatos y el conjunto. Por ahora, la puntuación no aporta ventaja demostrable.</p>';
+  }
+
+  function vistaMetodo() {
+    var u = D.umbrales;
+    return '<div class="card"><h2>Qué hace la app</h2><p>1) <b>Descarta</b> tokens con señales de estafa documentadas. 2) <b>Puntúa</b> el resto con reglas transparentes. 3) <b>Se valida a sí misma</b> midiendo qué pasó después (pestaña 📈).</p>' +
+      '<p>Cada regla indica su base: ' + baseTag("estudio") + ' investigación publicada · ' + baseTag("herramienta") + ' motor experto (RugCheck, GeckoTerminal) · ' + baseTag("práctica") + ' criterio habitual de traders, sin estudio que lo respalde.</p></div>' +
+      '<div class="card"><h3>Descarte automático</h3><ul class="l">' +
+      '<li>Autoridad de congelación activa' + baseTag("estudio") + ' — uno de los tres patrones de rug pull documentados en Solana.</li>' +
+      '<li>Autoridad de acuñación activa' + baseTag("estudio") + '.</li>' +
+      '<li>Honeypot o "rugged" según RugCheck/GeckoTerminal' + baseTag("herramienta") + '.</li>' +
+      '<li>Cualquier riesgo de nivel "peligro" en RugCheck' + baseTag("herramienta") + ' (concentración extrema, insiders, historial del creador…).</li>' +
+      '<li>Pool libre con menos del ' + u.lp_bloqueado_min + ' % de liquidez bloqueada o quemada' + baseTag("estudio") + ' — la retirada de liquidez es otro de los patrones documentados. En la curva de pump.fun y en PumpSwap no aplica: el protocolo retiene o quema la liquidez.</li></ul></div>' +
+      '<div class="card"><h3>Puntuación (0-100)</h3><ul class="l">' +
+      '<li><b>Presencia en redes</b>' + baseTag("estudio") + ' — en 833.000 lanzamientos, los que anunciaban Telegram se graduaron 8,9 veces más, y con las tres redes 17 veces más.</li>' +
+      '<li><b>Avance en la curva</b>' + baseTag("estudio") + ' (solo tokens en la curva) — la probabilidad de graduarse depende sobre todo de cuánto SOL lleva acumulado.</li>' +
+      '<li><b>Tamaño medio de operación</b>' + baseTag("estudio") + ' (solo en la curva) — acumular liquidez con pocas operaciones grandes fue el mejor predictor de graduación; muchas operaciones diminutas suelen ser bots. Es una aproximación a esa variable.</li>' +
+      '<li><b>Liquidez</b> y <b>liquidez/capitalización</b>' + baseTag("práctica") + ' (tokens ya fuera de la curva) — sin fondo suficiente no se puede salir sin hundir el precio.</li>' +
+      '<li><b>Dominio comprador</b> y <b>compradores distintos</b> en la última hora' + baseTag("práctica") + '.</li>' +
+      '<li><b>GT Score</b>' + baseTag("herramienta") + ' — índice de salud de GeckoTerminal (peso pequeño).</li></ul>' +
+      '<p class="sub">Bandas: ≥ 60 candidato · 40-59 vigilar · < 40 débil. Los pesos son iniciales: la validación dirá si funcionan.</p></div>' +
+      '<div class="card"><h3>Alertas (restan puntos)</h3><ul class="l">' +
+      '<li>Más del ' + (100 * u.venta_h1).toFixed(0) + ' % de vendedores en la última hora (−15)' + baseTag("práctica") + '.</li>' +
+      '<li>Volumen 24 h mayor que ' + u.vol_liq + '× la liquidez: posible volumen lavado (−10)' + baseTag("práctica") + '.</li>' +
+      '<li>Desarrollador con más del ' + u.dev_pct + ' % del suministro (−10)' + baseTag("práctica") + '.</li>' +
+      '<li>Avisos de RugCheck (−4 cada uno)' + baseTag("herramienta") + '.</li>' +
+      '<li>Menos de ' + u.edad_min + ' min de vida (aviso sin penalización)' + baseTag("práctica") + '.</li></ul></div>' +
+      '<div class="card"><h3>Lo que debes saber</h3><ul class="l">' +
+      '<li>Los estudios predicen la <b>graduación</b>, no tu beneficio. Tras graduarse es habitual una subida seguida de una caída fuerte cuando venden los primeros compradores.</li>' +
+      '<li>En la muestra más reciente (2026) se graduó el 0,2 % de los lanzamientos de pump.fun, y menos del 5 % de todos los tokens sigue cotizando a los 90 días.</li>' +
+      '<li>La concentración real suele ser mayor que la visible: los insiders reparten tokens entre muchas carteras (el 36,5 % del suministro en cuentas agrupadas en un estudio).</li>' +
+      '<li>La concentración alta también aparece en tokens que suben mucho: es lo que permite tanto los pumps como los dumps.</li>' +
+      '<li>La app mira tokens en tendencia y nuevos de GeckoTerminal cada 20 minutos: no ve todo el mercado ni en tiempo real.</li></ul>' +
+      '<h3>Fuentes</h3><ul class="l sub">' +
+      '<li>Kamat (2026), survival analysis de 832.941 lanzamientos de pump.fun — arXiv 2607.02823.</li>' +
+      '<li>Marino, Naviglio, Tarantelli y Lillo (2026), <i>Predicting the success of new crypto-tokens: the Pump.fun case</i> — arXiv 2602.14860.</li>' +
+      '<li>MemeTrans / MELT, dataset de lanzamientos de alto riesgo en Solana — arXiv 2602.13480.</li>' +
+      '<li><i>From Hype to Collapse: Investigating Rug Pull Scams on Solana</i> — arXiv 2603.24625.</li>' +
+      '<li>CoinGecko, supervivencia de 18,67 millones de tokens de pump.fun (2026).</li></ul></div>' +
+      '<div class="card sub">Fuentes de datos: GeckoTerminal · RugCheck. ' + (D.avisos && D.avisos.length ? '<br>Avisos de la última ejecución: ' + D.avisos.map(esc).join(" · ") : 'Sin avisos en la última ejecución.') + '</div>';
+  }
+
+  function ir(tab) {
+    st.tab = tab;
+    Array.prototype.forEach.call(document.querySelectorAll("nav button"), function (b) {
+      b.classList.toggle("activo", b.dataset.tab === (tab === "detalle" ? st.volver : tab));
+    });
+    if (!D) return;
+    var v = $("vista");
+    if (tab === "candidatos") { v.innerHTML = vistaCandidatos(); enganchar(); }
+    else if (tab === "descartados") { v.innerHTML = vistaDescartados(); enganchar(); }
+    else if (tab === "detalle") { v.innerHTML = vistaDetalle(); if ($("volver")) $("volver").onclick = function () { ir(st.volver || "candidatos"); }; }
+    else if (tab === "validacion") v.innerHTML = vistaValidacion();
+    else v.innerHTML = vistaMetodo();
+    window.scrollTo(0, 0);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("nav button"), function (b) { b.onclick = function () { ir(this.dataset.tab); }; });
+  window.__app = { st: st, ir: ir, datos: function () { return D; } };
+  cargar();
+})();
+</script>
+</body>
+</html>
